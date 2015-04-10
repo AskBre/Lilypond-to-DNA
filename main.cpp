@@ -18,9 +18,15 @@ int main(int argc, char *argv[]) {
 	if(file.is_open()) {
 		DnaTranslator dna;
 
-		string time = dna.getTime(file);
+		dna.setFile(file);
+
+		string time = dna.getTime();
+		string key = dna.getKey();
+		string scale = dna.getScale();
 
 		cout << "Time is: " << time << endl;
+		cout << "Key is: " << key << endl;
+		cout << "Scale is: " << scale << endl;
 
 		string dnaString = "DNAAAA";
 

@@ -1,9 +1,11 @@
 #pragma once
+
 #define DEBUG
 
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 #include "UnsignedToDna.h"
 
@@ -11,11 +13,19 @@ using namespace std;
 
 class DnaTranslator {
 	public:
-		string getTime(ifstream& file);
-		string getKey(ifstream& file);
-		string getScale(ifstream& file);
-		string getMelody(ifstream& file);
+		void setFile(ifstream& file);
+		string getTime();
+		string getKey();
+		string getScale();
+		string getMelody();
 
 	private:
+		ifstream* _file;
+		vector <string> words;
+		string getCommandValue(string& command);
+
+		UnsignedToDna uToDna;
+
+		const vector<string> keys = {"c", "des", "d", "ees", "e", "fes", "f", "ges", "g", "aes", "a", "bes", "b"};
 
 };

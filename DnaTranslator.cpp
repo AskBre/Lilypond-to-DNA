@@ -86,6 +86,14 @@ string DnaTranslator::getScale() {
 	return dnaScale;
 }
 
+string DnaTranslator::getMelody() {
+	string dnaMel;
+
+	// Damn, this one was surprisingly hard
+
+	return dnaMel;
+}
+
 string DnaTranslator::getCommandValue(string& command) {
 	string value;
 	string word;

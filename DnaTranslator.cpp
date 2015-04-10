@@ -1,7 +1,25 @@
 #include "DnaTranslator.h"
 
 void DnaTranslator::setFile(ifstream& file) {
-	_file = &file;
+	string line;
+
+	string word;
+
+	while(getline (file,line)) {
+		//Make line into a vector of strings
+		for(auto c : line) {
+			if(c == ' ' || c == '\t' || c == '\n') {
+				if(!word.empty()) {
+					words.push_back(word);
+					word.clear();
+				}
+			} else {
+				word.push_back(c);
+			}
+		}
+	}
+
+	cout << endl;
 }
 
 string DnaTranslator::getTime() {
@@ -56,15 +74,13 @@ string DnaTranslator::getScale() {
 	string rMinor = getCommandValue(minor);
 
 	if(!rMajor.empty()) {
-		cout << "Major" << endl;
 		uScale = 0;
 	} else if (!rMinor.empty()) {
-		cout << "Minor" << endl;
 		uScale = 1;
 	} else {
 		cout << "Can't find any scale info!" << endl;
 	}
-	
+
 	dnaScale = uToDna.convert(uScale);
 
 	return dnaScale;
@@ -72,44 +88,21 @@ string DnaTranslator::getScale() {
 
 string DnaTranslator::getCommandValue(string& command) {
 	string value;
-	string line;
-
-	vector<string> words;
 	string word;
 
-	while(getline (*_file,line)) {
-		//Make line into a vector of strings
-		string _line = line += '\n';
-		
-		for(auto c : _line) {
-			if(c == ' ' || c == '\t' || c == '\n') {
-				if(!word.empty()) {
-					words.push_back(word);
-					word.clear();
-				}
-			} else {
-				word.push_back(c);
-			}
-		}
+	bool commandExists = find(words.begin(), words.end(), command) != words.end();
 
-		bool wordExist = find(words.begin(), words.end(), command) != words.end();
+	if(commandExists) {
+		int commandPos = find(words.begin(), words.end(), command) - words.begin();
 
-		if(wordExist) {
-			int wordPos = find(words.begin(), words.end(), command) - words.begin();
+		value = words.at(commandPos+1);
 
-			word = words.at(wordPos+1);
-
-			if(command == "\\minor" || command == "\\major") {
-				word = words.at(wordPos);
-				cout << "It is indeed" << endl;
-			}
-
-			return word;
-		}
-
-		words.clear();
+		return value;
 	}
 
-	cout << "Couldn't find the command " << command << endl;
+	if(command != "\\minor" && command != "\\major") {
+		cout << "Couldn't find the command " << command << endl;
+	}
+
 	return "";
 }

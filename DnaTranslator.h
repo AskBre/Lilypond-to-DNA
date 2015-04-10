@@ -20,8 +20,7 @@ class DnaTranslator {
 		string getMelody();
 
 	private:
-		ifstream* _file;
-		vector <string> words;
+		vector<string> words;
 		string getCommandValue(string& command);
 
 		UnsignedToDna uToDna;

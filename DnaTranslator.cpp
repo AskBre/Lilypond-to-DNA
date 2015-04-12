@@ -2,12 +2,12 @@
 
 void DnaTranslator::setFile(ifstream& file) {
 	string line;
-
 	string word;
 
 	while(getline (file,line)) {
+		string _line = line += '\n';
 		//Make line into a vector of strings
-		for(auto c : line) {
+		for(auto c : _line) {
 			if(c == ' ' || c == '\t' || c == '\n') {
 				if(!word.empty()) {
 					words.push_back(word);
@@ -18,8 +18,6 @@ void DnaTranslator::setFile(ifstream& file) {
 			}
 		}
 	}
-
-	cout << endl;
 }
 
 string DnaTranslator::getTime() {
@@ -166,6 +164,7 @@ string DnaTranslator::getMelody() {
 
 		if(!isNote) {
 			cout << w << " doesn't seem to be a note!" << endl;
+			cout << endl;
 			continue;
 		}
 

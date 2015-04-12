@@ -15,12 +15,14 @@ int main(int argc, char *argv[]) {
 
 	ifstream file(argv[1]);
 
+	string dna;
+
 	if(file.is_open()) {
 		DnaTranslator dnaMaker;
 
 		dnaMaker.setFile(file);
 
-		string dna = "ATG";
+		dna = "ATG";
 		dna += dnaMaker.getTime();
 		dna += dnaMaker.getKey();
 		dna += dnaMaker.getScale();
@@ -32,6 +34,13 @@ int main(int argc, char *argv[]) {
 	} else {
 		cout << "The file isn't open" << endl;
 	}
+
+	ofstream dnaFile("dna.txt");
+	time_t t = time(nullptr);
+
+	dnaFile << "This DNA is created from score " << argv[1];
+	dnaFile << " at " << asctime(localtime(&t)) << endl;
+	dnaFile << dna << endl;
 
 	return 0;
 }

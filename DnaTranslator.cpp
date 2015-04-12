@@ -27,6 +27,9 @@ string DnaTranslator::getTime() {
 	string command = "\\time";
 	string scoreTime = getCommandValue(command);
 
+	cout << endl;
+	cout << "Getting time" << endl;
+
 	vector <int> iTime;
 
 	for(auto c : scoreTime) {
@@ -48,24 +51,38 @@ string DnaTranslator::getTime() {
 		cout << "Wrong number of times!" << endl;
 	}
 
+	cout << "   scoreTime is " << scoreTime << endl;
+	cout << "   dnaTime is " << dnaTime << endl;
+	cout << endl;
+
 	return dnaTime;
 }
 
 string DnaTranslator::getKey() {
-	string dnaKeu;
+	string dnaKey;
 	string command = "\\key";
 	string scoreKey = getCommandValue(command);
 
+	cout << endl;
+	cout << "Getting key" << endl;
+
 	unsigned uKey = find(keys.begin(), keys.end(), scoreKey) - keys.begin();
 
-	dnaKeu = uToDna.convert(uKey);
+	dnaKey = uToDna.convert(uKey);
 
-	return dnaKeu;
+	cout << "   scoreKey is " << scoreKey << endl;
+	cout << "   dnaKey is " << dnaKey << endl;
+	cout << endl;
+
+	return dnaKey;
 }
 
 string DnaTranslator::getScale() {
 	string dnaScale;
 	unsigned uScale;
+	 
+	cout << endl;
+	cout << "Getting scale" << endl;
 
 	string major = "\\major";
 	string minor = "\\minor";
@@ -82,14 +99,100 @@ string DnaTranslator::getScale() {
 	}
 
 	dnaScale = uToDna.convert(uScale);
+	
+	cout << "   uScale is " << uScale << endl;
+	cout << "   dnaScale is " << dnaScale << endl;
+	cout << endl;
 
 	return dnaScale;
 }
 
 string DnaTranslator::getMelody() {
 	string dnaMel;
+	unsigned time = 0;
 
-	// Damn, this one was surprisingly hard
+	for(int i=0; i<words.size(); i++) {
+		string note;
+		unsigned offset = 0;
+		unsigned eraseAmt = 0;
+
+		string w = words.at(i);
+
+		cout << "The word is " << w << endl;
+
+		//Check whether the word is a command
+		if(w.at(0) == '\\') {
+			continue;
+		}
+
+		// Is the previous word a command
+		if(i>0 && words.at(i-1) != "\\minor" && words.at(i-1) != "\\major"){
+			if(words.at(i-1).at(0) == '\\') {
+				continue;
+			}
+		}
+
+
+		for(int j=0; j<w.size(); j++) {
+			char c = w.at(j);
+
+			// Get the time
+			if(isdigit(c)) {
+				time = c - '0';
+				eraseAmt++;;
+			}
+
+			// Check for offset
+			switch(c) {
+				case '\'':
+					offset += 12;
+					eraseAmt++;;
+					break;
+				case ',':
+					offset -= 12;
+					eraseAmt++;;
+					break;
+				default:
+					break;
+			}
+		}
+
+		for(int i = 0; i < eraseAmt; i++) {
+			w.pop_back();
+		}
+
+		// Check if it exists in the keys-vector
+		bool isNote = find(keys.begin(), keys.end(), w) != keys.end();
+
+		if(!isNote) {
+			cout << w << " doesn't seem to be a note!" << endl;
+			continue;
+		}
+
+		unsigned uDna = find(keys.begin(), keys.end(), w) - keys.begin();
+		cout << "uDna is " << uDna << endl;
+		uDna += offset;
+		cout << "offset + uDna is " << uDna << endl;
+
+		string dnaNote = uToDna.convert(uDna);
+		string dnaTime;
+
+		if(time>0) {
+			dnaTime = uToDna.convert(time);
+		} else {
+			cout << "Haven't received any time-value, exiting" << endl;
+			exit(EXIT_FAILURE);
+		}
+
+		cout << "dnaNote is " << dnaNote << endl;
+		cout << "Time is " << time << endl;
+		cout << "dnaTime is " << dnaTime << endl;
+
+		dnaMel += dnaNote;
+		dnaMel += dnaTime;
+
+		cout << endl;
+	}
 
 	return dnaMel;
 }

@@ -25,6 +25,6 @@ class DnaTranslator {
 
 		UnsignedToDna uToDna;
 
-		const vector<string> keys = {"c", "des", "d", "ees", "e", "fes", "f", "ges", "g", "aes", "a", "bes", "b"};
+		const vector<string> keys = {"c", "des", "d", "ees", "e", "fes", "f", "ges", "g", "aes", "a", "bes", "b", "r"};
 
 };

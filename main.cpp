@@ -16,21 +16,18 @@ int main(int argc, char *argv[]) {
 	ifstream file(argv[1]);
 
 	if(file.is_open()) {
-		DnaTranslator dna;
+		DnaTranslator dnaMaker;
 
-		dna.setFile(file);
+		dnaMaker.setFile(file);
 
-		string time = dna.getTime();
-		string key = dna.getKey();
-		string scale = dna.getScale();
+		string dna = "ATG";
+		dna += dnaMaker.getTime();
+		dna += dnaMaker.getKey();
+		dna += dnaMaker.getScale();
+		dna += dnaMaker.getMelody();
+		dna += "TAA";
 
-		cout << "Time is: " << time << endl;
-		cout << "Key is: " << key << endl;
-		cout << "Scale is: " << scale << endl;
-
-		string dnaString = "DNAAAA";
-
-		cout << "The final dna is: " << dnaString << endl;
+		cout << "The final dna is " << dna << endl;
 
 	} else {
 		cout << "The file isn't open" << endl;

@@ -13,6 +13,12 @@ void UnsignedToDna::toTernary(unsigned decNum, vector<unsigned>& terNum) {
 }
 
 string UnsignedToDna::convert(unsigned decNum) {
+
+	if(decNum>63) {
+		cout << "The number " << decNum << " is more than the DNA-system can handle!" << endl;
+		exit(EXIT_FAILURE);
+	}
+
 	unsigned _decNum = decNum + offset;
 
 	vector<unsigned> terNum;
